@@ -1,17 +1,30 @@
 {
   "name": "component-css-loader",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Component stylesheets loader",
-  "main": "component_css_loader.js",
+  "main": "index.js",
   "dependencies": {
-    "loader-utils": "^0.2.3"
+    "loader-utils": "^0.2.3",
+    "source-map": "^0.4.4"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kossnocorp/component-css-loader"
+    "url": "https://github.com/barbuza/component-css-loader"
   },
-  "keywords": ["webpack", "react"],
+  "keywords": [
+    "webpack",
+    "react"
+  ],
   "author": "Sasha Koss <kossnocorp@gmail.com>",
+  "contributors": [
+    {
+      "name": "Anton Fedchenko",
+      "url": "https://github.com/kompot/"
+    },
+    {
+      "name": "Victor Kotseruba",
+      "url": "https://github.com/barbuza/"
+    }
+  ],
   "license": "MIT"
 }
-

@@ -10,7 +10,7 @@ component is required stylesheets file will be required as well._
 ## Installation
 
 ```
-npm install --save-dev component-css-loader
+npm install --save-dev barbuza/component-css-loader
 ```
 
 ## Usage
@@ -18,57 +18,83 @@ npm install --save-dev component-css-loader
 In config file:
 
 ``` javascript
-// ...
   module: {
     loaders: [
+      {
+        test: /\.js$/,
+        loaders: [
+          'component-css?ext=styl&varName=styles',
+          'babel'
+        ]
+      },
+      {
+        test: /\.styl$/,
+        loaders: [
+          'style',
+          'css?module&importLoaders=1&localIdentName=[hash:base64:5]',
+          'stylus'
+        ]
+      },
       // ...
-      { test: /\.jsx$/, loader: 'component-css?ext=styl!...' },
-      // ...
-    ]
+    ],
+    // ...
   },
-// ...
-```
-
-Inline:
-
-``` javascript
-var Button = require('component-css?ext=styl!./components/button/button.jsx');
 ```
 
 Read more about [webpack loaders](http://webpack.github.io/docs/using-loaders.html).
 
 ## Avaliable queries
 
-At the moment, only single query is avalible: `ext`. It allows to specify
-extension name of stylesheets file.
+`ext` specifies the extension of matching style files
+
+`varName` for use with css local-scope, defines the name for exported identifiers hash
 
 ## Example
 
-Imagine you have "button" component (in this case, component file has
-[`jsx`](http://facebook.github.io/react/docs/jsx-in-depth.html) extension, and
-stylesheets file has [`styl`](http://learnboost.github.io/stylus/)) extension):
+Imagine you have `Button` component (in this case, component file has
+`js` extension, and stylesheets file has [`styl`](http://learnboost.github.io/stylus/)) extension):
 
 ```
 ...
-├── button
-│   ├── button.jsx
-│   ├── button.styl
+├── components
+│   ├── Button.js
+│   ├── Button.styl
 │   ...
 ...
 ```
 
-Later, from another component:
-
-``` javascript
-var Button = require('./components/button/button.jsx');
+`Button.js`
+```js
+export default class Button {
+  render() {
+    return (
+      <div> className={styles.root}>
+        <div className={styles.caption}>{this.props.caption}</div>
+      </div>
+    )
+  }
+}
 ```
 
-As the result you will have two required files: `button.jsx` and `button.styl`.
+`Button.styl`
+```css
+.root {
+  background: gray;
+}
+
+.caption {
+  font-weight: bold;
+}
+```
+
+as the result you have isolated style definitions for `Button` component and there is no worry about class name clashes
 
 ### How it works?
 
 `component-css-loader` modifies original component source code and adds
-`require('component_name.styl')` at the first line.
+```
+var [varName] = require('./[ComponentName].[ext]')
+```
+at the first line.
 
-For better understanding, read [the source code](./component_css_loader.js).
-
+For better understanding, read [the source code](./index.js).
